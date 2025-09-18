@@ -15,13 +15,36 @@ body {
   color: white;
   font-family: sans-serif;
 }
-.wheel {
+.wheel-container {
+  position: relative;
   width: 300px;
   height: 300px;
+}
+.wheel {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 5px solid #fff;
-  background: conic-gradient(#f00 0deg 180deg, #0f0 180deg 360deg);
-  transition: transform 3s ease-out;
+  background: conic-gradient(
+    #f00 0deg 60deg,
+    #0f0 60deg 120deg,
+    #00f 120deg 180deg,
+    #ff0 180deg 240deg,
+    #0ff 240deg 300deg,
+    #f0f 300deg 360deg
+  );
+  transition: transform 4s cubic-bezier(.17,.67,.83,.67);
+}
+.arrow {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid white;
 }
 button {
   margin-top: 20px;
@@ -39,14 +62,18 @@ button:disabled {
 }
 #result {
   margin-top: 20px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
+  text-align: center;
 }
 </style>
 </head>
 <body>
 
-<div class="wheel" id="wheel"></div>
+<div class="wheel-container">
+  <div class="arrow"></div>
+  <div class="wheel" id="wheel"></div>
+</div>
 <button id="spinBtn">Lancer la roue</button>
 <div id="result"></div>
 
@@ -55,27 +82,52 @@ const spinBtn = document.getElementById('spinBtn');
 const wheel = document.getElementById('wheel');
 const resultDiv = document.getElementById('result');
 
-// Vérifie si déjà joué
-if(localStorage.getItem('played')){
+// Sections de gains
+const sections = ["Melon", "Pomme", "Cuberdon", "Violette", "Citron", "Perdu"];
+// Poids pour chaque section (la somme = 100)
+const weights = [10, 10, 10, 10, 10, 50]; // Perdu a 50% de chance
+
+let totalDeg = 0; // rotation totale accumulée
+
+// Vérifier si déjà joué
+if(localStorage.getItem('played')) {
   spinBtn.disabled = true;
-  resultDiv.textContent = 'Vous avez déjà joué !';
+  resultDiv.textContent = "Vous avez déjà joué !";
 }
 
 spinBtn.addEventListener('click', () => {
-  if(localStorage.getItem('played')) return;
+  if(localStorage.getItem('played')) return; // bloque si déjà joué
 
-  // Rotation aléatoire
-  const deg = 360*3 + Math.floor(Math.random()*360); // 3 tours + angle aléatoire
-  wheel.style.transform = `rotate(${deg}deg)`;
+  // Choisir une section en fonction du poids
+  const rand = Math.random() * 100;
+  let sum = 0;
+  let chosenIndex = 0;
+  for(let i = 0; i < weights.length; i++){
+    sum += weights[i];
+    if(rand <= sum){
+      chosenIndex = i;
+      break;
+    }
+  }
+
+  // Calculer un angle aléatoire dans la section choisie
+  const sectionSize = 360 / sections.length;
+  const minAngle = chosenIndex * sectionSize;
+  const maxAngle = (chosenIndex + 1) * sectionSize;
+
+  // Rotation fluide
+  const spins = 10; 
+  const deg = spins*360 + (Math.random() * (maxAngle - minAngle) + minAngle);
+
+  totalDeg += deg;
+  wheel.style.transform = `rotate(${totalDeg}deg)`;
 
   // Affiche le résultat après rotation
   setTimeout(() => {
-    const angle = deg % 360;
-    const outcome = angle < 180 ? 'Perdu 😢' : 'Gagné 🎉';
-    resultDiv.textContent = outcome;
-  }, 3000);
+    resultDiv.textContent = sections[chosenIndex];
+  }, 4000);
 
-  // Bloque le jeu après le premier tour
+  // Bloquer le jeu après le premier tour
   localStorage.setItem('played', 'yes');
   spinBtn.disabled = true;
 });
