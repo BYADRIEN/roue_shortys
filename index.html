@@ -49,6 +49,7 @@
   border-bottom: 25px solid white;
 }
 </style>
+
 <!-- Font Awesome CDN -->
 <link
   rel="stylesheet"
@@ -57,77 +58,88 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
+
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen space-y-6 font-sans">
 
-<div class="wheel-container">
-  <div class="arrow"></div>
-  <div class="wheel" id="wheel"></div>
-</div>
+  <img src="wwwwwqqqq.jpg" alt="" class="w-32 h-auto rounded-lg shadow-md">
 
-<button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 rounded-md text-white font-semibold">
-  Lancer la roue
-</button>
-<div class="grid grid-cols-3 gap-4 p-4">
-  <div class="p-4 text-white"><i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook</div>
-  <div class="p-4 text-white"><i class="fab fa-instagram text-pink-500 text-2xl mx-2"></i>Instagram</div>
-  <div class="p-4 text-white "><i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok</div>
-</div>
-<script>
-const spinBtn = document.getElementById('spinBtn');
-const wheel = document.getElementById('wheel');
-const resultDiv = document.getElementById('result');
+  <h1>Lancer la roue et regarde ce que tu gagnes</h1>
+  <h1>Attention 1 jeu possible</h1>
 
-// Sections de gains
-const sections = ["Melon", "Pomme", "Cuberdon", "Violette", "Citron", "Perdu"];
-// Poids pour chaque section (la somme = 100)
-const weights = [10, 10, 10, 10, 10, 50]; // Perdu a 50% de chance
+  <div class="wheel-container">
+    <div class="arrow"></div>
+    <div class="wheel" id="wheel"></div>
+  </div>
 
-let totalDeg = 0; // rotation totale accumulée
+  <button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 rounded-md text-white font-semibold">
+    Lancer la roue
+  </button>
 
-// Vérifier si déjà joué
-if(localStorage.getItem('played')) {
-  spinBtn.disabled = true;
-  resultDiv.textContent = "Vous avez déjà joué !";
-}
+  <h1>On oublie pas de s'abonner</h1>
+  <div class="grid grid-cols-3 gap-4 p-4">
+    <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
+      <i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook
+    </a>
+    <a href="https://www.instagram.com/shotys_officiel/" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
+      <i class="fab fa-instagram text-pink-500 text-2xl mx-2"></i>Instagram
+    </a>
+    <a href="https://www.tiktok.com/@shotys_officiel?lang=fr" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
+      <i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok
+    </a>
+  </div>
 
-spinBtn.addEventListener('click', () => {
-  if(localStorage.getItem('played')) return; // bloque si déjà joué
+  <div id="result" class="mt-4 text-xl font-bold text-white"></div>
 
-  // Choisir une section en fonction du poids
-  const rand = Math.random() * 100;
-  let sum = 0;
-  let chosenIndex = 0;
-  for(let i = 0; i < weights.length; i++){
-    sum += weights[i];
-    if(rand <= sum){
-      chosenIndex = i;
-      break;
-    }
+  <script>
+  const spinBtn = document.getElementById('spinBtn');
+  const wheel = document.getElementById('wheel');
+  const resultDiv = document.getElementById('result');
+
+  const sections = ["Melon", "Pomme", "Cuberdon", "Violette", "Citron", "Perdu"];
+  const weights = [8, 8, 8, 8, 8, 60]; // Perdu 60% de chance
+  let totalDeg = 0;
+
+  // Bloquer si déjà joué
+  if(localStorage.getItem('played')) {
+    spinBtn.disabled = true;
+    resultDiv.textContent = "Vous avez déjà joué !";
   }
 
-  // Calculer un angle aléatoire dans la section choisie
-  const sectionSize = 360 / sections.length;
-  const minAngle = chosenIndex * sectionSize;
-  const maxAngle = (chosenIndex + 1) * sectionSize;
+  spinBtn.addEventListener('click', () => {
+    if(localStorage.getItem('played')) return; // bloque si déjà joué
 
-  // Rotation fluide
-  const spins = 10; 
-  const deg = spins*360 + (Math.random() * (maxAngle - minAngle) + minAngle);
+    // Choisir une section selon les poids
+    const rand = Math.random() * 100;
+    let sum = 0;
+    let chosenIndex = 0;
+    for(let i = 0; i < weights.length; i++){
+      sum += weights[i];
+      if(rand <= sum){
+        chosenIndex = i;
+        break;
+      }
+    }
 
-  totalDeg += deg;
-  wheel.style.transform = `rotate(${totalDeg}deg)`;
+    const sectionSize = 360 / sections.length;
+    const minAngle = chosenIndex * sectionSize;
+    const maxAngle = (chosenIndex + 1) * sectionSize;
 
-  // Affiche le résultat après rotation
-  setTimeout(() => {
-    resultDiv.textContent = sections[chosenIndex];
-  }, 4000);
+    const spins = 10; 
+    const deg = spins*360 + (Math.random() * (maxAngle - minAngle) + minAngle);
 
-  // Bloquer le jeu après le premier tour
-  localStorage.setItem('played', 'yes');
-  spinBtn.disabled = true;
-});
-</script>
+    totalDeg += deg;
+    wheel.style.transform = `rotate(${totalDeg}deg)`;
+
+    setTimeout(() => {
+      resultDiv.textContent = sections[chosenIndex];
+    }, 4000);
+
+    // Enregistrer que la personne a joué
+    localStorage.setItem('played', 'yes');
+    spinBtn.disabled = true;
+  });
+  </script>
 
 </body>
 </html>
