@@ -4,17 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roue - Une seule chance</title>
+
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {},
+        }
+    }
+</script>
+
 <style>
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: #222;
-  color: white;
-  font-family: sans-serif;
-}
+/* Style pour la roue et la flèche */
 .wheel-container {
   position: relative;
   width: 300px;
@@ -46,37 +48,31 @@ body {
   border-right: 15px solid transparent;
   border-bottom: 25px solid white;
 }
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background: #4cafef;
-  color: #fff;
-}
-button:disabled {
-  background: #555;
-  cursor: not-allowed;
-}
-#result {
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-}
 </style>
+<!-- Font Awesome CDN -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-...ton-hash-ici..."
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 </head>
-<body>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen space-y-6 font-sans">
 
 <div class="wheel-container">
   <div class="arrow"></div>
   <div class="wheel" id="wheel"></div>
 </div>
-<button id="spinBtn">Lancer la roue</button>
-<div id="result"></div>
 
+<button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 rounded-md text-white font-semibold">
+  Lancer la roue
+</button>
+<div class="grid grid-cols-3 gap-4 p-4">
+  <div class="p-4 text-white"><i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook</div>
+  <div class="p-4 text-white"><i class="fab fa-instagram text-pink-500 text-2xl mx-2"></i>Instagram</div>
+  <div class="p-4 text-white "><i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok</div>
+</div>
 <script>
 const spinBtn = document.getElementById('spinBtn');
 const wheel = document.getElementById('wheel');
