@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roue - Une seule chance</title>
+<style>
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #222;
+  color: white;
+  font-family: sans-serif;
+}
+.wheel {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  background: conic-gradient(#f00 0deg 180deg, #0f0 180deg 360deg);
+  transition: transform 3s ease-out;
+}
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background: #4cafef;
+  color: #fff;
+}
+button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+#result {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="wheel" id="wheel"></div>
+<button id="spinBtn">Lancer la roue</button>
+<div id="result"></div>
+
+<script>
+const spinBtn = document.getElementById('spinBtn');
+const wheel = document.getElementById('wheel');
+const resultDiv = document.getElementById('result');
+
+// Vérifie si déjà joué
+if(localStorage.getItem('played')){
+  spinBtn.disabled = true;
+  resultDiv.textContent = 'Vous avez déjà joué !';
+}
+
+spinBtn.addEventListener('click', () => {
+  if(localStorage.getItem('played')) return;
+
+  // Rotation aléatoire
+  const deg = 360*3 + Math.floor(Math.random()*360); // 3 tours + angle aléatoire
+  wheel.style.transform = `rotate(${deg}deg)`;
+
+  // Affiche le résultat après rotation
+  setTimeout(() => {
+    const angle = deg % 360;
+    const outcome = angle < 180 ? 'Perdu 😢' : 'Gagné 🎉';
+    resultDiv.textContent = outcome;
+  }, 3000);
+
+  // Bloque le jeu après le premier tour
+  localStorage.setItem('played', 'yes');
+  spinBtn.disabled = true;
+});
+</script>
+
+</body>
+</html>
