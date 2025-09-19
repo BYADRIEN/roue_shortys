@@ -7,13 +7,6 @@
 
 <!-- Tailwind CSS via CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {},
-        }
-    }
-</script>
 
 <style>
 /* Style pour la roue et la flèche */
@@ -54,30 +47,34 @@
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  integrity="sha512-...ton-hash-ici..."
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
 />
 
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen space-y-6 font-sans">
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen font-sans">
 
-  <img src="wwwwwqqqq.jpg" alt="" class="w-32 h-auto rounded-lg shadow-md">
-
-  <h1>Lancer la roue et regarde ce que tu gagnes</h1>
-  <h1>Attention 1 jeu possible</h1>
-
-  <div class="wheel-container">
-    <div class="arrow"></div>
-    <div class="wheel" id="wheel"></div>
+<div class="grid grid-cols-2 gap-4">
+  <div class="p-4"><img src="wwwwwqqqq.jpg" alt="" class="w-32 h-auto rounded-lg shadow-md"></div>
+  <div class="text-left p-4">
+    <h1 class="text-xl font-semibold mb-2">Lancer la roue et regarde ce que tu gagnes</h1>
+    <h2 class="text-lg font-medium">Attention 1 jeu possible</h2>
   </div>
-
-  <button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 rounded-md text-white font-semibold">
+</div>
+ <!-- Bloc roue -->
+  <div class="p-12">
+<div class="wheel-container p-1">
+  <div class="arrow"></div>
+  <div class="wheel" id="wheel"></div>
+</div>
+  </div>
+<!-- Bouton -->
+  <button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 rounded-md text-white font-semibold mb-4">
     Lancer la roue
   </button>
-
-  <h1>On oublie pas de s'abonner</h1>
-  <div class="grid grid-cols-3 gap-4 p-4">
+  <!-- Résultat -->
+  <div id="result" class="mt-4 text-xl font-bold text-white"></div>
+  <!-- Réseaux sociaux -->
+  <h1 class="mb-2">On oublie pas de s'abonner</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
     <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
       <i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook
     </a>
@@ -88,8 +85,6 @@
       <i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok
     </a>
   </div>
-
-  <div id="result" class="mt-4 text-xl font-bold text-white"></div>
 
   <script>
   const spinBtn = document.getElementById('spinBtn');
@@ -107,9 +102,8 @@
   }
 
   spinBtn.addEventListener('click', () => {
-    if(localStorage.getItem('played')) return; // bloque si déjà joué
+    if(localStorage.getItem('played')) return;
 
-    // Choisir une section selon les poids
     const rand = Math.random() * 100;
     let sum = 0;
     let chosenIndex = 0;
@@ -135,7 +129,6 @@
       resultDiv.textContent = sections[chosenIndex];
     }, 4000);
 
-    // Enregistrer que la personne a joué
     localStorage.setItem('played', 'yes');
     spinBtn.disabled = true;
   });
