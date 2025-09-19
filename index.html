@@ -61,78 +61,87 @@
 </div>
  <!-- Bloc roue -->
   <div class="p-12">
-<div class="wheel-container p-1">
-  <div class="arrow"></div>
-  <div class="wheel" id="wheel"></div>
-</div>
-  </div>
-<!-- Bouton -->
-  <button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 rounded-md text-white font-semibold mb-4">
-    Lancer la roue
-  </button>
-  <!-- Résultat -->
-  <div id="result" class="mt-4 text-xl font-bold text-white"></div>
-  <!-- Réseaux sociaux -->
-  <h1 class="mb-2">On oublie pas de s'abonner</h1>
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
-    <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
-      <i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook
-    </a>
-    <a href="https://www.instagram.com/shotys_officiel/" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
-      <i class="fab fa-instagram text-pink-500 text-2xl mx-2"></i>Instagram
-    </a>
-    <a href="https://www.tiktok.com/@shotys_officiel?lang=fr" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
-      <i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok
-    </a>
+    <div class="wheel-container p-1">
+      <div class="arrow"></div>
+      <div class="wheel" id="wheel"></div>
+    </div>
   </div>
 
-  <script>
-  const spinBtn = document.getElementById('spinBtn');
+<!-- Zone bouton / message -->
+<div id="playArea" class="mt-4 text-xl font-bold text-white"></div>
+
+<!-- Résultat -->
+<div id="result" class="mt-4 text-xl font-bold text-white"></div>
+
+<!-- Réseaux sociaux -->
+<h1 class="p-8 mb-2">On oublie pas de s'abonner</h1>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
+  <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
+    <i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook
+  </a>
+  <a href="https://www.instagram.com/shotys_officiel/" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
+    <i class="fab fa-instagram text-pink-500 text-2xl mx-2"></i>Instagram
+  </a>
+  <a href="https://www.tiktok.com/@shotys_officiel?lang=fr" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
+    <i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok
+  </a>
+</div>
+
+<script>
   const wheel = document.getElementById('wheel');
   const resultDiv = document.getElementById('result');
+  const playArea = document.getElementById('playArea');
 
   const sections = ["Melon", "Pomme", "Cuberdon", "Violette", "Citron", "Perdu"];
   const weights = [8, 8, 8, 8, 8, 60]; // Perdu 60% de chance
   let totalDeg = 0;
 
-  // Bloquer si déjà joué
-  if(localStorage.getItem('played')) {
-    spinBtn.disabled = true;
-    resultDiv.textContent = "Vous avez déjà joué !";
-  }
+  // Vérifie si l'utilisateur a déjà joué
+  if (localStorage.getItem('played')) {
+    // Affiche directement le message
+    playArea.textContent = "Vous avez déjà joué !";
+  } else {
+    // Si pas joué : on affiche le bouton
+    playArea.innerHTML = `<button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold mb-4">
+      Lancer la roue
+    </button>`;
 
-  spinBtn.addEventListener('click', () => {
-    if(localStorage.getItem('played')) return;
+    const spinBtn = document.getElementById('spinBtn');
 
-    const rand = Math.random() * 100;
-    let sum = 0;
-    let chosenIndex = 0;
-    for(let i = 0; i < weights.length; i++){
-      sum += weights[i];
-      if(rand <= sum){
-        chosenIndex = i;
-        break;
+    spinBtn.addEventListener('click', () => {
+      if (localStorage.getItem('played')) return;
+
+      const rand = Math.random() * 100;
+      let sum = 0;
+      let chosenIndex = 0;
+      for (let i = 0; i < weights.length; i++) {
+        sum += weights[i];
+        if (rand <= sum) {
+          chosenIndex = i;
+          break;
+        }
       }
-    }
 
-    const sectionSize = 360 / sections.length;
-    const minAngle = chosenIndex * sectionSize;
-    const maxAngle = (chosenIndex + 1) * sectionSize;
+      const sectionSize = 360 / sections.length;
+      const minAngle = chosenIndex * sectionSize;
+      const maxAngle = (chosenIndex + 1) * sectionSize;
 
-    const spins = 10; 
-    const deg = spins*360 + (Math.random() * (maxAngle - minAngle) + minAngle);
+      const spins = 10;
+      const deg = spins * 360 + (Math.random() * (maxAngle - minAngle) + minAngle);
 
-    totalDeg += deg;
-    wheel.style.transform = `rotate(${totalDeg}deg)`;
+      totalDeg += deg;
+      wheel.style.transform = `rotate(${totalDeg}deg)`;
 
-    setTimeout(() => {
-      resultDiv.textContent = sections[chosenIndex];
-    }, 4000);
+      setTimeout(() => {
+        resultDiv.textContent = sections[chosenIndex];
+      }, 4000);
 
-    localStorage.setItem('played', 'yes');
-    spinBtn.disabled = true;
-  });
-  </script>
+      localStorage.setItem('played', 'yes');
+      // Remplace le bouton par le message
+      playArea.textContent = "Vous avez déjà joué !";
+    });
+  }
+</script>
 
 </body>
 </html>
