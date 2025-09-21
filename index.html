@@ -92,56 +92,70 @@
   const resultDiv = document.getElementById('result');
   const playArea = document.getElementById('playArea');
 
-  const sections = ["Melon", "Pomme", "Cuberdon", "Violette", "Citron", "Perdu"];
-  const weights = [8, 8, 8, 8, 8, 60]; // Perdu 60% de chance
+  const sections = [
+    { name: "Melon", taste: "Doux et frais", img: "🍈" },
+    { name: "Pomme", taste: "Croquant et sucré", img: "🍎" },
+    { name: "Cuberdon", taste: "Bonbon belge typique", img: "🍬" },
+    { name: "Violette", taste: "Fruité et parfumé", img: "🍇" },
+    { name: "Citron", taste: "Acidulé et frais", img: "🍋" },
+    { name: "Perdu", taste: "Oh non ! Perdu", img: "💀" }
+  ];
+
+  const weights = [8, 8, 8, 8, 8, 60]; // Probabilités
   let totalDeg = 0;
 
-  // Vérifie si l'utilisateur a déjà joué
-  if (localStorage.getItem('played')) {
-    // Affiche directement le message
-    playArea.textContent = "Vous avez déjà joué !";
-  } else {
-    // Si pas joué : on affiche le bouton
+  function showButton() {
     playArea.innerHTML = `<button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold mb-4">
       Lancer la roue
     </button>`;
-
+    
     const spinBtn = document.getElementById('spinBtn');
+    spinBtn.addEventListener('click', () => spinWheel());
+  }
 
-    spinBtn.addEventListener('click', () => {
-      if (localStorage.getItem('played')) return;
+  function spinWheel() {
+    // Vérifie si l'utilisateur a déjà joué
+    if (localStorage.getItem('played')) return;
 
-      const rand = Math.random() * 100;
-      let sum = 0;
-      let chosenIndex = 0;
-      for (let i = 0; i < weights.length; i++) {
-        sum += weights[i];
-        if (rand <= sum) {
-          chosenIndex = i;
-          break;
-        }
+    const rand = Math.random() * 100;
+    let sum = 0;
+    let chosenIndex = 0;
+    for (let i = 0; i < weights.length; i++) {
+      sum += weights[i];
+      if (rand <= sum) {
+        chosenIndex = i;
+        break;
       }
+    }
 
-      const sectionSize = 360 / sections.length;
-      const minAngle = chosenIndex * sectionSize;
-      const maxAngle = (chosenIndex + 1) * sectionSize;
+    const sectionSize = 360 / sections.length;
+    const minAngle = chosenIndex * sectionSize;
+    const maxAngle = (chosenIndex + 1) * sectionSize;
 
-      const spins = 10;
-      const deg = spins * 360 + (Math.random() * (maxAngle - minAngle) + minAngle);
+    const spins = 10;
+    const deg = spins * 360 + (Math.random() * (maxAngle - minAngle) + minAngle);
 
-      totalDeg += deg;
-      wheel.style.transform = `rotate(${totalDeg}deg)`;
+    totalDeg += deg;
+    wheel.style.transform = `rotate(${totalDeg}deg)`;
 
-      setTimeout(() => {
-        resultDiv.textContent = sections[chosenIndex];
-      }, 4000);
+    // Supprime le bouton pendant l'animation
+    playArea.innerHTML = '';
 
+    setTimeout(() => {
+      const section = sections[chosenIndex];
+      resultDiv.textContent = `${section.img} ${section.name} - ${section.taste}`;
+      // Bloque le jeu après un tour
       localStorage.setItem('played', 'yes');
-      // Remplace le bouton par le message
       playArea.textContent = "Vous avez déjà joué !";
-    });
+    }, 4000);
+  }
+
+  // Initialisation
+  if (localStorage.getItem('played')) {
+    playArea.textContent = "Vous avez déjà joué !";
+  } else {
+    showButton();
   }
 </script>
-
 </body>
 </html>
