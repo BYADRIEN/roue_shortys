@@ -23,7 +23,17 @@
 <!-- Roue -->
 <div class="relative w-72 h-72 mb-6">
   <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[25px] border-b-white"></div>
-  <div id="wheel" class="w-full h-full rounded-full border-4 border-white transition-transform duration-[4000ms] ease-out"></div>
+  <div id="wheel" 
+       class="w-full h-full rounded-full border-4 border-white transition-transform duration-[4000ms] ease-out"
+       style="background: conic-gradient(
+         #f97316 0deg 60deg,
+         #facc15 60deg 120deg,
+         #22c55e 120deg 180deg,
+         #3b82f6 180deg 240deg,
+         #a855f7 240deg 300deg,
+         #ef4444 300deg 360deg
+       );">
+  </div>
 </div>
 
 <!-- Zone bouton / message -->
@@ -65,7 +75,6 @@ function showButton() {
   playArea.innerHTML = `<button id="spinBtn" class="px-6 py-3 bg-orange-500 hover:bg-orange-600 rounded-md text-white font-semibold transition-shadow shadow-md hover:shadow-lg">
     Lancer la roue
   </button>`;
-
   document.getElementById('spinBtn').addEventListener('click', spinWheel);
 }
 
