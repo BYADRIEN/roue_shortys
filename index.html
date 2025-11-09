@@ -4,158 +4,104 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roue - Une seule chance</title>
-
-<!-- Tailwind CSS via CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-/* Style pour la roue et la flèche */
-.wheel-container {
-  position: relative;
-  width: 300px;
-  height: 300px;
-}
-.wheel {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 5px solid #fff;
-  background: conic-gradient(
-    #f00 0deg 60deg,
-    #0f0 60deg 120deg,
-    #00f 120deg 180deg,
-    #ff0 180deg 240deg,
-    #0ff 240deg 300deg,
-    #f0f 300deg 360deg
-  );
-  transition: transform 4s cubic-bezier(.17,.67,.83,.67);
-}
-.arrow {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 25px solid white;
-}
-</style>
-
-<!-- Font Awesome CDN -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-/>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen font-sans">
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen font-sans p-6">
 
-<div class="grid grid-cols-2 gap-4">
-  <div class="p-4"><img src="wwwwwqqqq.jpg" alt="" class="w-32 h-auto rounded-lg shadow-md"></div>
-  <div class="text-left p-4">
-    <h1 class="text-xl font-semibold mb-2">Lancer la roue et regarde ce que tu gagnes</h1>
-    <h2 class="text-lg font-medium">Attention 1 jeu possible</h2>
+<!-- Titre et description -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-4xl mb-8">
+  <div class="flex justify-center sm:justify-start p-4">
+    <img src="wwwwwqqqq.jpg" alt="Image Jeu" class="w-32 h-auto rounded-lg shadow-md">
+  </div>
+  <div class="flex flex-col justify-center p-4 text-center sm:text-left">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-2">Lancer la roue et regarde ce que tu gagnes</h1>
+    <h2 class="text-lg font-medium text-gray-300">Attention, 1 jeu possible</h2>
   </div>
 </div>
- <!-- Bloc roue -->
-  <div class="p-12">
-    <div class="wheel-container p-1">
-      <div class="arrow"></div>
-      <div class="wheel" id="wheel"></div>
-    </div>
-  </div>
+
+<!-- Roue -->
+<div class="relative w-72 h-72 mb-6">
+  <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[25px] border-b-white"></div>
+  <div id="wheel" class="w-full h-full rounded-full border-4 border-white transition-transform duration-[4000ms] ease-out"></div>
+</div>
 
 <!-- Zone bouton / message -->
-<div id="playArea" class="mt-4 text-xl font-bold text-white"></div>
-
-<!-- Résultat -->
-<div id="result" class="mt-4 text-xl font-bold text-white"></div>
+<div id="playArea" class="mb-4 text-xl font-bold"></div>
+<div id="result" class="mb-6 text-xl font-bold"></div>
 
 <!-- Réseaux sociaux -->
-<h1 class="p-8 mb-2">On oublie pas de s'abonner</h1>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
-  <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
-    <i class="fab fa-facebook-f text-blue-600 text-2xl mx-2"></i>Facebook
+<h2 class="text-xl mb-4 font-semibold">On oublie pas de s'abonner</h2>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl">
+  <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="flex items-center justify-center gap-2 p-4 bg-gray-800 hover:bg-blue-600 rounded-md transition">
+    <i class="fab fa-facebook-f text-2xl text-blue-500"></i> Facebook
   </a>
-  <a href="https://www.instagram.com/shotys_officiel/" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
-    <i class="fab fa-instagram text-pink-500 text-2xl mx-2"></i>Instagram
+  <a href="https://www.instagram.com/shotys_officiel/" target="_blank" class="flex items-center justify-center gap-2 p-4 bg-gray-800 hover:bg-pink-500 rounded-md transition">
+    <i class="fab fa-instagram text-2xl text-pink-500"></i> Instagram
   </a>
-  <a href="https://www.tiktok.com/@shotys_officiel?lang=fr" target="_blank" class="p-4 text-white flex items-center justify-center hover:bg-gray-800 rounded-md">
-    <i class="fab fa-tiktok text-black text-2xl mx-2"></i>Tiktok
+  <a href="https://www.tiktok.com/@shotys_officiel?lang=fr" target="_blank" class="flex items-center justify-center gap-2 p-4 bg-gray-800 hover:bg-black rounded-md transition">
+    <i class="fab fa-tiktok text-2xl"></i> TikTok
   </a>
 </div>
 
 <script>
-  const wheel = document.getElementById('wheel');
-  const resultDiv = document.getElementById('result');
-  const playArea = document.getElementById('playArea');
+const wheel = document.getElementById('wheel');
+const resultDiv = document.getElementById('result');
+const playArea = document.getElementById('playArea');
 
-  const sections = [
-    { name: "Melon", taste: "Doux et frais", img: "🍈" },
-    { name: "Pomme", taste: "Croquant et sucré", img: "🍎" },
-    { name: "Cuberdon", taste: "Bonbon belge typique", img: "🍬" },
-    { name: "Violette", taste: "Fruité et parfumé", img: "🍇" },
-    { name: "Citron", taste: "Acidulé et frais", img: "🍋" },
-    { name: "Perdu", taste: "Oh non ! Perdu", img: "💀" }
-  ];
+const sections = [
+  { name: "Melon", taste: "Doux et frais", img: "🍈" },
+  { name: "Pomme", taste: "Croquant et sucré", img: "🍎" },
+  { name: "Cuberdon", taste: "Bonbon belge typique", img: "🍬" },
+  { name: "Violette", taste: "Fruité et parfumé", img: "🍇" },
+  { name: "Citron", taste: "Acidulé et frais", img: "🍋" },
+  { name: "Perdu", taste: "Oh non ! Perdu", img: "💀" }
+];
 
-  const weights = [8, 8, 8, 8, 8, 60]; // Probabilités
-  let totalDeg = 0;
+const weights = [8,8,8,8,8,60];
+let totalDeg = 0;
 
-  function showButton() {
-    playArea.innerHTML = `<button id="spinBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold mb-4">
-      Lancer la roue
-    </button>`;
-    
-    const spinBtn = document.getElementById('spinBtn');
-    spinBtn.addEventListener('click', () => spinWheel());
+function showButton() {
+  playArea.innerHTML = `<button id="spinBtn" class="px-6 py-3 bg-orange-500 hover:bg-orange-600 rounded-md text-white font-semibold transition-shadow shadow-md hover:shadow-lg">
+    Lancer la roue
+  </button>`;
+
+  document.getElementById('spinBtn').addEventListener('click', spinWheel);
+}
+
+function spinWheel() {
+  if(localStorage.getItem('played')) return;
+
+  const rand = Math.random() * 100;
+  let sum = 0;
+  let chosenIndex = 0;
+  for(let i=0;i<weights.length;i++){
+    sum += weights[i];
+    if(rand <= sum){ chosenIndex = i; break; }
   }
 
-  function spinWheel() {
-    // Vérifie si l'utilisateur a déjà joué
-    if (localStorage.getItem('played')) return;
+  const sectionSize = 360 / sections.length;
+  const minAngle = chosenIndex * sectionSize;
+  const maxAngle = (chosenIndex + 1) * sectionSize;
+  const spins = 10;
+  const deg = spins * 360 + (Math.random() * (maxAngle - minAngle) + minAngle);
+  totalDeg += deg;
+  wheel.style.transform = `rotate(${totalDeg}deg)`;
 
-    const rand = Math.random() * 100;
-    let sum = 0;
-    let chosenIndex = 0;
-    for (let i = 0; i < weights.length; i++) {
-      sum += weights[i];
-      if (rand <= sum) {
-        chosenIndex = i;
-        break;
-      }
-    }
-
-    const sectionSize = 360 / sections.length;
-    const minAngle = chosenIndex * sectionSize;
-    const maxAngle = (chosenIndex + 1) * sectionSize;
-
-    const spins = 10;
-    const deg = spins * 360 + (Math.random() * (maxAngle - minAngle) + minAngle);
-
-    totalDeg += deg;
-    wheel.style.transform = `rotate(${totalDeg}deg)`;
-
-    // Supprime le bouton pendant l'animation
-    playArea.innerHTML = '';
-
-    setTimeout(() => {
-      const section = sections[chosenIndex];
-      resultDiv.textContent = `${section.img} ${section.name} - ${section.taste}`;
-      // Bloque le jeu après un tour
-      localStorage.setItem('played', 'yes');
-      playArea.textContent = "Vous avez déjà joué !";
-    }, 4000);
-  }
-
-  // Initialisation
-  if (localStorage.getItem('played')) {
+  playArea.innerHTML = '';
+  setTimeout(() => {
+    const section = sections[chosenIndex];
+    resultDiv.textContent = `${section.img} ${section.name} - ${section.taste}`;
+    localStorage.setItem('played','yes');
     playArea.textContent = "Vous avez déjà joué !";
-  } else {
-    showButton();
-  }
+  }, 4000);
+}
+
+if(localStorage.getItem('played')){
+  playArea.textContent = "Vous avez déjà joué !";
+}else{
+  showButton();
+}
 </script>
 </body>
 </html>
