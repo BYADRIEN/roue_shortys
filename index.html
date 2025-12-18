@@ -15,7 +15,7 @@
     <img src="wwwwwqqqq.jpg" alt="Image Jeu" class="w-32 h-auto rounded-lg shadow-md">
   </div>
   <div class="flex flex-col justify-center p-4 text-center sm:text-left">
-    <h1 class="text-2xl sm:text-3xl font-bold mb-2">Lancer la roue et regarde ce que tu gagnes</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold mb-2"> Lance la roue et découvre ce que tu gagnes</h1>
     <h2 class="text-lg font-medium text-gray-300">Attention, 1 jeu possible</h2>
   </div>
 </div>
@@ -41,7 +41,7 @@
 <div id="result" class="mb-6 text-xl font-bold"></div>
 
 <!-- Réseaux sociaux -->
-<h2 class="text-xl mb-4 font-semibold">On oublie pas de s'abonner</h2>
+<h2 class="text-xl mb-4 font-semibold">N'oublie pas de t'abonner</h2>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl">
   <a href="https://www.facebook.com/profile.php?id=61569076876790" target="_blank" class="flex items-center justify-center gap-2 p-4 bg-gray-800 hover:bg-blue-600 rounded-md transition">
     <i class="fab fa-facebook-f text-2xl text-blue-500"></i> Facebook
@@ -61,7 +61,7 @@ const playArea = document.getElementById('playArea');
 
 const sections = [
   { name: "Melon", taste: "Doux et frais", img: "🍈" },
-  { name: "Pomme", taste: "Croquant et sucré", img: "🍎" },
+  { name: "Pomme", taste: "Croquant et sucrée", img: "🍎" },
   { name: "Cuberdon", taste: "Bonbon belge typique", img: "🍬" },
   { name: "Violette", taste: "Fruité et parfumé", img: "🍇" },
   { name: "Citron", taste: "Acidulé et frais", img: "🍋" },
@@ -102,12 +102,12 @@ function spinWheel() {
     const section = sections[chosenIndex];
     resultDiv.textContent = `${section.img} ${section.name} - ${section.taste}`;
     localStorage.setItem('played','yes');
-    playArea.textContent = "Vous avez déjà joué !";
+    playArea.textContent = " Tu as déjà joué ! ";
   }, 4000);
 }
 
 if(localStorage.getItem('played')){
-  playArea.textContent = "Vous avez déjà joué !";
+  playArea.textContent = " Tu as déjà joué ! !";
 }else{
   showButton();
 }
